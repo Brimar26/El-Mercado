@@ -34,66 +34,69 @@
             display: flex;
             flex-direction: column;
             color: var(--text-dark);
-            overflow-y: auto;
         }
 
-        /* BARRA SUPERIOR RESPONSIVA */
+        /* BARRA SUPERIOR COMPACTA (FUSIONADA Y OPTIMIZADA) */
         .barra-superior {
             background: var(--mined-green);
             color: white;
-            padding: 12px 20px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            flex-wrap: wrap;
-            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .info-nivel {
-            text-align: center;
-            order: 2;
-        }
-        
-        .info-nivel h1 {
-            font-size: clamp(18px, 4vw, 22px);
-            font-weight: 800;
-        }
-        
-        .info-nivel span {
-            font-size: 13px;
-            opacity: 0.9;
+        .seccion-izquierda {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .btn-volver {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-            order: 1;
+        }
+
+        .info-titulo-nivel {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-titulo-nivel h1 {
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+        
+        .info-titulo-nivel span {
+            font-size: 11px;
+            opacity: 0.9;
         }
 
         .indicators-derecha {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
-            order: 3;
         }
 
         .badge-superior {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: clamp(14px, 3.5vw, 16px);
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             white-space: nowrap;
         }
 
@@ -102,8 +105,8 @@
             flex: 1;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: clamp(15px, 4vw, 30px);
+            align-items: flex-start; /* Sube el contenido en móviles */
+            padding: 12px;
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
@@ -113,50 +116,51 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
         }
 
         .bloque-problema {
             background: #E8F8F5;
-            border: 3px solid var(--mined-green);
-            border-radius: 24px;
-            padding: clamp(20px, 5vw, 30px);
+            border: 2.5px solid var(--mined-green);
+            border-radius: 18px;
+            padding: 15px;
             position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
         }
 
         .encabezado-problema {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            gap: 15px;
+            margin-bottom: 10px;
         }
 
         .icono-producto {
-            font-size: clamp(36px, 8vw, 48px);
+            font-size: 36px;
             background: white;
-            padding: 8px;
-            border-radius: 16px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            flex-shrink: 0;
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
         }
 
         .btn-audio-control {
             background: white;
             border: 2px solid var(--mined-green);
             color: var(--mined-dark-green);
-            padding: 10px 22px;
-            border-radius: 25px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.2s ease;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
-            white-space: nowrap;
         }
 
         .btn-audio-control.activo {
@@ -173,29 +177,29 @@
 
         @keyframes pulsoSuave {
             0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
 
         .texto-problema {
-            font-size: clamp(18px, 4.5vw, 24px);
-            line-height: 1.6;
+            font-size: 17px;
+            line-height: 1.4;
             font-weight: 700;
             color: var(--text-dark);
         }
 
-        /* CUADRÍCULA DE OPCIONES RESISTENTE A MÓVILES */
+        /* CUADRÍCULA DE OPCIONES COMPACTA */
         .cuadrícula-opciones {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: clamp(10px, 3vw, 20px);
+            gap: 10px;
         }
 
         .btn-opcion {
             background: white;
-            border-radius: 18px;
-            padding: clamp(14px, 4.5vw, 28px);
-            font-size: clamp(22px, 6vw, 32px);
+            border-radius: 14px;
+            padding: 12px 8px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-dark);
             cursor: pointer;
@@ -203,32 +207,33 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            transition: background-color 0.2s, border-color 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            min-height: 60px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.04);
+            min-height: 55px;
+            transition: background-color 0.1s;
         }
 
+        /* Indicador circular de color */
         .btn-opcion::before {
             content: '';
             position: absolute;
-            left: 18px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            width: 14px;
-            height: 14px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
 
-        .opcion-azul { border: 3px solid var(--blue-option); }
+        .opcion-azul { border: 2.5px solid var(--blue-option); }
         .opcion-azul::before { background-color: var(--blue-option); }
 
-        .opcion-amarilla { border: 3px solid var(--yellow-option); }
+        .opcion-amarilla { border: 2.5px solid var(--yellow-option); }
         .opcion-amarilla::before { background-color: var(--yellow-option); }
 
-        .opcion-naranja { border: 3px solid var(--orange-option); }
+        .opcion-naranja { border: 2.5px solid var(--orange-option); }
         .opcion-naranja::before { background-color: var(--orange-option); }
 
-        .opcion-verde { border: 3px solid var(--green-option); }
+        .opcion-verde { border: 2.5px solid var(--green-option); }
         .opcion-verde::before { background-color: var(--green-option); }
 
         .btn-opcion.error-seleccion {
@@ -236,7 +241,6 @@
             border-color: var(--soft-red);
             color: var(--soft-red);
             opacity: 0.7;
-            cursor: not-allowed;
         }
 
         .btn-opcion.correcto-seleccion {
@@ -248,119 +252,68 @@
         /* PANTALLAS DE ESTADO */
         .pantalla-estado {
             background: white;
-            padding: clamp(25px, 6vw, 40px) clamp(20px, 5vw, 30px);
-            border-radius: 24px;
+            padding: 20px 15px;
+            border-radius: 18px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            max-width: 500px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            max-width: 450px;
             width: 100%;
-            margin: auto;
+            margin-top: 10px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .pantalla-estado h2 {
-            font-size: clamp(20px, 5vw, 26px);
+            font-size: 20px;
         }
 
         .btn-grande {
             background: var(--mined-green);
             color: white;
             border: none;
-            padding: 16px 32px;
-            font-size: clamp(16px, 4vw, 19px);
+            padding: 14px 28px;
+            font-size: 16px;
             font-weight: bold;
-            border-radius: 16px;
+            border-radius: 12px;
             cursor: pointer;
             box-shadow: 0 4px 0 var(--mined-dark-green);
             width: 100%;
         }
 
         .marcador-final {
-            font-size: clamp(44px, 10vw, 60px);
+            font-size: 40px;
             font-weight: 900;
             color: var(--mined-dark-green);
         }
 
         .detalles-finales {
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: 14px;
             color: var(--text-dark);
-            line-height: 1.8;
+            line-height: 1.6;
             background: #F8FAFC;
-            padding: 15px;
-            border-radius: 16px;
-            text-align: left;
+            padding: 12px;
+            border-radius: 12px;
         }
 
         .linea-detalle {
             display: flex;
             justify-content: space-between;
             border-bottom: 1px dashed #E2E8F0;
-            padding: 6px 0;
-            gap: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .barra-superior {
-                padding: 10px 15px;
-            }
-            
-            .info-nivel {
-                width: 100%;
-                order: 1;
-                margin-bottom: 2px;
-            }
-            
-            .btn-volver {
-                order: 2;
-            }
-            
-            .indicators-derecha {
-                order: 3;
-            }
-
-            .contenido-juego {
-                padding: 10px;
-            }
-
-            .tarjeta-juego {
-                gap: 12px;
-            }
-
-            .bloque-problema {
-                padding: 15px;
-            }
-
-            .texto-problema {
-                font-size: 1.1rem;
-                line-height: 1.4;
-            }
-
-            .cuadrícula-opciones {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .btn-opcion {
-                padding: 14px 10px;
-                font-size: 24px;
-                min-height: 55px;
-            }
-            
-            .btn-opcion::before {
-                left: 12px;
-            }
+            padding: 5px 0;
         }
     </style>
 </head>
 <body>
 
+    <!-- BARRA ÚNICA REESTRUCTURADA: SIN DOBLE TÍTULO Y SIN BLOQUE VERDE GIGANTE -->
     <div class="barra-superior">
-        <button class="btn-volver" onclick="irAlInicio()">← Volver</button>
-        <div class="info-nivel">
-            <h1>El Mercado</h1>
-            <span>Nivel 10</span>
+        <div class="seccion-izquierda">
+            <button class="btn-volver" onclick="irAlInicio()">←</button>
+            <div class="info-titulo-nivel">
+                <h1>El Mercado</h1>
+                <span>Nivel 10</span>
+            </div>
         </div>
         <div class="indicators-derecha">
             <div class="badge-superior">⭐ <span id="txt-puntos">0</span> pts</div>
@@ -372,14 +325,14 @@
         
         <div id="pantalla-inicio" class="pantalla-estado">
             <h2>🛍️ ¡Bienvenido al Mercado!</h2>
-            <p style="color: var(--text-muted); font-size: clamp(15px, 3.5vw, 16px);">Pulsa el botón de audio cuando desees escuchar la lectura del problema o pausarla en cualquier momento.</p>
+            <p style="color: var(--text-muted); font-size: 14px;">Pulsa el botón de audio cuando desees escuchar la lectura del problema o pausarla en cualquier momento.</p>
             <button class="btn-grande" onclick="iniciarJuego()">¡Comenzar Reto! 🚀</button>
         </div>
 
         <div id="pantalla-juego" class="tarjeta-juego" style="display: none;">
             <div class="bloque-problema">
                 <div class="encabezado-problema">
-                    <span class="icono-producto" id="prod-icono">🍅</span>
+                    <span class="icono-producto" id="prod-icono">🛍️</span>
                     <button class="btn-audio-control" id="btn-audio" onclick="alternarAudioEnunciado()">🔊 Escuchar</button>
                 </div>
                 <p class="texto-problema" id="prod-enunciado">Generando desafío...</p>
@@ -399,9 +352,9 @@
             <div class="marcador-final" id="score-total">0 pts</div>
             
             <div class="detalles-finales">
-                <div class="linea-detalle"><span>Puntaje Base (10 ejercicios):</span> <span id="lbl-puntos-base">100 pts</span></div>
-                <div class="linea-detalle" style="color: var(--soft-red);"><span>Puntos menos por errores:</span> <span id="lbl-penalizacion">-0 pts</span></div>
-                <div class="linea-detalle" style="margin-top: 8px; border-top: 2px solid #CBD5E1; padding-top: 8px; font-weight: 800;"><span>Tiempo Total Empleado:</span> <span id="lbl-tiempo-total">0s</span></div>
+                <div class="linea-detalle"><span>Puntaje Base:</span> <span id="lbl-puntos-base">100 pts</span></div>
+                <div class="linea-detalle" style="color: var(--soft-red);"><span>Errores:</span> <span id="lbl-penalizacion">-0 pts</span></div>
+                <div class="linea-detalle" style="margin-top: 5px; border-top: 1px solid #CBD5E1; padding-top: 5px; font-weight: bold;"><span>Tiempo Empleado:</span> <span id="lbl-tiempo-total">0s</span></div>
             </div>
             
             <button class="btn-grande" onclick="irAlInicio()">Volver a Jugar 🔄</button>
@@ -418,7 +371,6 @@
         let intervaloTiempo = null;
         let audioCtx = null;
         let blockAccionSeleccion = false;
-
         let discursoActual = null;
         let estadoAudio = "detenido"; 
 
@@ -502,7 +454,6 @@
                 discursoActual = new SpeechSynthesisUtterance(problemas[indiceActual].lectura);
                 discursoActual.lang = 'es-ES';
                 discursoActual.rate = 0.95;
-
                 discursoActual.onend = () => { resetearBotonAudio(); };
 
                 estadoAudio = "reproduciendo";
@@ -513,7 +464,7 @@
             } else if (estadoAudio === "reproduciendo") {
                 window.speechSynthesis.pause();
                 estadoAudio = "pausado";
-                btn.innerHTML = "▶️ Continuar";
+                btn.innerHTML = "▶️ Cont.";
                 btn.className = "btn-audio-control pausado";
 
             } else if (estadoAudio === "pausado") {
@@ -674,8 +625,7 @@
                 sonarEfectoInclusivo('incorrecto');
                 botonElemento.classList.add('error-seleccion'); 
                 totalCorreccionesModoJuego++; 
-                
-                emitirVozObligatoria("Incorrecto, vuelve a intentar.");
+                emitirVozObligatoria("Intenta de nuevo.");
             }
         }
 
