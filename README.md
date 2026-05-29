@@ -35,8 +35,10 @@
             display: flex;
             flex-direction: column;
             color: var(--text-dark);
+            overflow-y: auto;
         }
 
+        /* BARRA SUPERIOR RESPONSIVA */
         .barra-superior {
             background: var(--mined-green);
             color: white;
@@ -46,34 +48,23 @@
             align-items: center;
             font-weight: bold;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .info-nivel {
             text-align: center;
+            order: 2;
         }
+        
         .info-nivel h1 {
-            font-size: clamp(16px, 4vw, 20px);
+            font-size: clamp(18px, 4vw, 22px); /* Ajustado el mínimo a 18px */
             font-weight: 800;
         }
+        
         .info-nivel span {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.9;
-        }
-
-        .indicadores-derecha {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .badge-superior {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: clamp(13px, 3.5vw, 15px);
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
         .btn-volver {
@@ -86,14 +77,34 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            order: 1;
         }
 
+        .indicadores-derecha {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            order: 3;
+        }
+
+        .badge-superior {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: clamp(14px, 3.5vw, 16px); /* Garantiza legibilidad en celular */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        /* CONTENEDOR DE JUEGO ADAPTATIVO */
         .contenido-juego {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: clamp(10px, 3vw, 25px);
+            padding: clamp(15px, 4vw, 30px);
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
@@ -120,17 +131,18 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            gap: 15px;
         }
 
         .icono-producto {
-            font-size: clamp(32px, 8vw, 45px);
+            font-size: clamp(36px, 8vw, 48px);
             background: white;
             padding: 8px;
             border-radius: 16px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            flex-shrink: 0;
         }
 
-        /* DISEÑO ÚNICO PARA EL BOTÓN DE AUDIO DINÁMICO */
         .btn-audio-control {
             background: white;
             border: 2px solid var(--mined-green);
@@ -145,6 +157,7 @@
             gap: 8px;
             transition: all 0.2s ease;
             box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            white-space: nowrap;
         }
 
         .btn-audio-control.activo {
@@ -166,29 +179,24 @@
         }
 
         .texto-problema {
-            font-size: clamp(16px, 4.5vw, 22px);
+            font-size: clamp(18px, 4.5vw, 24px); /* Evita que el problema se encoja demasiado */
             line-height: 1.6;
             font-weight: 700;
             color: var(--text-dark);
         }
 
+        /* CUADRÍCULA OPTIMIZADA PARA MÓVILES */
         .cuadrícula-opciones {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: clamp(10px, 3vw, 18px);
-        }
-
-        @media (max-width: 500px) {
-            .cuadrícula-opciones {
-                grid-template-columns: 1fr;
-            }
+            gap: clamp(12px, 3vw, 20px);
         }
 
         .btn-opcion {
             background: white;
             border-radius: 18px;
-            padding: clamp(18px, 5vw, 25px);
-            font-size: clamp(20px, 6vw, 28px);
+            padding: clamp(20px, 5vw, 28px); /* Mayor espacio de toque interno */
+            font-size: clamp(22px, 6vw, 32px); /* Números grandes y claros en móviles */
             font-weight: 800;
             color: var(--text-dark);
             cursor: pointer;
@@ -198,16 +206,17 @@
             position: relative;
             transition: background-color 0.2s, border-color 0.2s;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            min-height: 70px; /* Evita que el botón colapse de tamaño */
         }
 
         .btn-opcion::before {
             content: '';
             position: absolute;
-            left: 15px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
         }
 
@@ -237,9 +246,10 @@
             color: var(--mined-dark-green);
         }
 
+        /* PANTALLAS DE ESTADO AJUSTADAS */
         .pantalla-estado {
             background: white;
-            padding: 40px 30px;
+            padding: clamp(25px, 6vw, 40px) clamp(20px, 5vw, 30px);
             border-radius: 24px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -248,7 +258,11 @@
             margin: auto;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
+        }
+
+        .pantalla-estado h2 {
+            font-size: clamp(20px, 5vw, 26px);
         }
 
         .btn-grande {
@@ -256,21 +270,22 @@
             color: white;
             border: none;
             padding: 16px 32px;
-            font-size: 18px;
+            font-size: clamp(16px, 4vw, 19px);
             font-weight: bold;
             border-radius: 16px;
             cursor: pointer;
             box-shadow: 0 4px 0 var(--mined-dark-green);
+            width: 100%; /* Ocupa el ancho disponible en la tarjeta */
         }
 
         .marcador-final {
-            font-size: clamp(40px, 8vw, 56px);
+            font-size: clamp(44px, 10vw, 60px);
             font-weight: 900;
             color: var(--mined-dark-green);
         }
 
         .detalles-finales {
-            font-size: 16px;
+            font-size: clamp(14px, 4vw, 16px);
             color: var(--text-dark);
             line-height: 1.8;
             background: #F8FAFC;
@@ -283,7 +298,44 @@
             display: flex;
             justify-content: space-between;
             border-bottom: 1px dashed #E2E8F0;
-            padding: 4px 0;
+            padding: 6px 0;
+            gap: 10px;
+        }
+
+        /* REGLAS DE ADAPTACIÓN PARA SMARTPHONES (BREAKPOINT HASTA 600PX) */
+        @media (max-width: 600px) {
+            .barra-superior {
+                padding: 10px 15px;
+            }
+            
+            .info-nivel {
+                width: 100%;
+                order: 1; /* El título se coloca arriba en el centro */
+                margin-bottom: 2px;
+            }
+            
+            .btn-volver {
+                order: 2;
+            }
+            
+            .indicadores-derecha {
+                order: 3;
+            }
+
+            .cuadrícula-opciones {
+                grid-template-columns: 1fr; /* Una opción por fila en celular para maximizar espacio táctil */
+                gap: 14px;
+            }
+
+            .btn-opcion {
+                padding: 22px;
+                justify-content: center;
+                font-size: 28px; /* Forzado a tamaño grande en móvil */
+            }
+            
+            .btn-opcion::before {
+                left: 25px; /* Mantiene el círculo decorativo bien posicionado */
+            }
         }
     </style>
 </head>
@@ -303,19 +355,16 @@
 
     <div class="contenido-juego">
         
-        <!-- PANTALLA INICIAL -->
         <div id="pantalla-inicio" class="pantalla-estado">
             <h2>🛍️ ¡Bienvenido al Mercado!</h2>
-            <p style="color: var(--text-muted);">Pulsa el botón de audio cuando desees escuchar la lectura del problema o pausarla en cualquier momento.</p>
+            <p style="color: var(--text-muted); font-size: clamp(15px, 3.5vw, 16px);">Pulsa el botón de audio cuando desees escuchar la lectura del problema o pausarla en cualquier momento.</p>
             <button class="btn-grande" onclick="iniciarJuego()">¡Comenzar Reto! 🚀</button>
         </div>
 
-        <!-- PANTALLA DE JUEGO ACTIVO -->
         <div id="pantalla-juego" class="tarjeta-juego" style="display: none;">
             <div class="bloque-problema">
                 <div class="encabezado-problema">
                     <span class="icono-producto" id="prod-icono">🍅</span>
-                    <!-- BOTÓN DE AUDIO MEJORADO -->
                     <button class="btn-audio-control" id="btn-audio" onclick="alternarAudioEnunciado()">🔊 Escuchar</button>
                 </div>
                 <p class="texto-problema" id="prod-enunciado">Generando desafío...</p>
@@ -329,7 +378,6 @@
             </div>
         </div>
 
-        <!-- PANTALLA FINAL -->
         <div id="pantalla-final" class="pantalla-estado" style="display: none;">
             <h2>🏆 ¡Resultado Final!</h2>
             <p style="color: var(--text-muted);">Circuito del mercado completado.</p>
@@ -357,7 +405,7 @@
         let blockAccionSeleccion = false;
 
         let discursoActual = null;
-        let estadoAudio = "detenido"; // detenido, reproduciendo, pausado
+        let estadoAudio = "detenido"; 
 
         const plantillasProblemas = [
             {
@@ -430,7 +478,6 @@
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        // CONTROL INTEGRADO DEL BOTÓN: Reproduce, Pausa o Continúa sin alterar el ritmo
         function alternarAudioEnunciado() {
             if (!('speechSynthesis' in window)) return;
             const btn = document.getElementById('btn-audio');
@@ -476,10 +523,9 @@
             }
         }
 
-        // RETROALIMENTACIÓN SIEMPRE ACTIVA (Acierto o Error)
         function emitirVozObligatoria(texto) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Detiene la lectura para cantar el resultado de inmediato
+                window.speechSynthesis.cancel(); 
                 resetearBotonAudio();
                 const u = new SpeechSynthesisUtterance(texto);
                 u.lang = 'es-ES';
@@ -514,8 +560,6 @@
         }
 
         function construirSetProblemas() {
-            let lista = [];
-            // Duplicamos o barajamos para completar 10 ítems
             let combinacion = [...plantillasProblemas, ...plantillasProblemas].sort(() => Math.random() - 0.5);
             return combinacion.map(p => {
                 let datos = p.generar();
@@ -566,7 +610,7 @@
 
         function desplegarProblema() {
             blockAccionSeleccion = false;
-            detenerAudioLimpio(); // Limpia la cola de voz anterior al cambiar de entorno
+            detenerAudioLimpio(); 
             
             let p = problemas[indiceActual];
             document.getElementById('prod-icono').innerText = p.icono;
@@ -627,8 +671,7 @@
             document.getElementById('pantalla-juego').style.display = 'none';
             document.getElementById('pantalla-final').style.display = 'flex';
 
-            // Sistema de puntaje normal: 10 puntos por pregunta correcta, menos errores acumulados
-            let penalizacionPorErrores = totalCorreccionesModoJuego * 3; // Baja puntos según fallos cometidos
+            let penalizacionPorErrores = totalCorreccionesModoJuego * 3; 
             let scoreFinalNeto = puntosBaseAcumulados - penalizacionPorErrores;
             if(scoreFinalNeto < 0) scoreFinalNeto = 0;
 
