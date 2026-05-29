@@ -79,7 +79,7 @@
             order: 1;
         }
 
-        .indicadores-derecha {
+        .indicators-derecha {
             display: flex;
             gap: 10px;
             align-items: center;
@@ -184,7 +184,7 @@
             color: var(--text-dark);
         }
 
-        /* CUADRÍCULA OPTIMIZADA (Se reducen gaps para móviles de forma fluida) */
+        /* CUADRÍCULA DE OPCIONES RESISTENTE A MÓVILES */
         .cuadrícula-opciones {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -194,7 +194,7 @@
         .btn-opcion {
             background: white;
             border-radius: 18px;
-            padding: clamp(14px, 4.5vw, 28px); /* Reducción adaptativa del relleno vertical */
+            padding: clamp(14px, 4.5vw, 28px);
             font-size: clamp(22px, 6vw, 32px);
             font-weight: 800;
             color: var(--text-dark);
@@ -205,7 +205,7 @@
             position: relative;
             transition: background-color 0.2s, border-color 0.2s;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            min-height: 60px; /* Tamaño mínimo optimizado para evitar desborde vertical */
+            min-height: 60px;
         }
 
         .btn-opcion::before {
@@ -245,7 +245,7 @@
             color: var(--mined-dark-green);
         }
 
-        /* PANTALLAS DE ESTADO AJUSTADAS */
+        /* PANTALLAS DE ESTADO */
         .pantalla-estado {
             background: white;
             padding: clamp(25px, 6vw, 40px) clamp(20px, 5vw, 30px);
@@ -301,7 +301,6 @@
             gap: 10px;
         }
 
-        /* REGLAS DE ADAPTACIÓN ESPECÍFICAS PARA SMARTPHONES */
         @media (max-width: 600px) {
             .barra-superior {
                 padding: 10px 15px;
@@ -317,40 +316,40 @@
                 order: 2;
             }
             
-            .indicadores-derecha {
+            .indicators-derecha {
                 order: 3;
             }
 
             .contenido-juego {
-                padding: 10px; /* Reduce espacio en bordes de pantalla externa */
+                padding: 10px;
             }
 
             .tarjeta-juego {
-                gap: 12px; /* Espaciado general entre tarjeta e interfaz reducido */
+                gap: 12px;
             }
 
             .bloque-problema {
-                padding: 15px; /* Comprime la caja de problemas para ganar altura vertical */
+                padding: 15px;
             }
 
             .texto-problema {
-                font-size: 1.1rem; /* Modera el texto del problema en pantallas muy chicas */
+                font-size: 1.1rem;
                 line-height: 1.4;
             }
 
             .cuadrícula-opciones {
-                grid-template-columns: repeat(2, 1fr); /* Se mantienen 2 columnas para optimizar espacio vertical */
-                gap: 10px; /* Espacios mínimos entre casillas */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
 
             .btn-opcion {
-                padding: 14px 10px; /* Menor padding vertical en móvil garantizando que no se corte */
-                font-size: 24px; /* Tamaño claro y equilibrado */
+                padding: 14px 10px;
+                font-size: 24px;
                 min-height: 55px;
             }
             
             .btn-opcion::before {
-                left: 12px; /* Mantiene el punto decorativo alineado a la izquierda */
+                left: 12px;
             }
         }
     </style>
@@ -363,7 +362,7 @@
             <h1>El Mercado</h1>
             <span>Nivel 10</span>
         </div>
-        <div class="indicadores-derecha">
+        <div class="indicators-derecha">
             <div class="badge-superior">⭐ <span id="txt-puntos">0</span> pts</div>
             <div class="badge-superior">⏱️ <span id="txt-tiempo">0s</span></div>
         </div>
@@ -416,3 +415,296 @@
         let puntosBaseAcumulados = 0;
         let totalCorreccionesModoJuego = 0;
         let tiempoSegundos = 0;
+        let intervaloTiempo = null;
+        let audioCtx = null;
+        let blockAccionSeleccion = false;
+
+        let discursoActual = null;
+        let estadoAudio = "detenido"; 
+
+        const plantillasProblemas = [
+            {
+                icono: "🛍️",
+                generar: () => {
+                    let total = Math.floor(Math.random() * 50) + 100; 
+                    let gasto = Math.floor(Math.random() * 40) + 20;   
+                    let sol = total - gasto;
+                    return {
+                        texto: `Papá fue al mercado con C$${total}. Gastó C$${gasto} en verduras. ¿Cuánto dinero le sobra?`,
+                        lectura: `Papá fue al mercado con ${total} córdobas. Gastó ${gasto} córdobas en verduras. ¿Cuánto dinero le sobra?`,
+                        correcta: sol
+                    };
+                }
+            },
+            {
+                icono: "🍅",
+                generar: () => {
+                    let t = Math.floor(Math.random() * 10) + 10; 
+                    let c = Math.floor(Math.random() * 10) + 5; 
+                    let sol = t + c;
+                    return {
+                        texto: `El puesto tiene ${t} tomates y ${c} cebollas. ¿Cuántas verduras hay en total?`,
+                        lectura: `El puesto tiene ${t} tomates y ${c} cebollas. ¿Cuántas verduras hay en total?`,
+                        correcta: sol
+                    };
+                }
+            },
+            {
+                icono: "🍌",
+                generar: () => {
+                    let docenas = Math.floor(Math.random() * 2) + 2; 
+                    let sol = docenas * 12;
+                    return {
+                        texto: `Doña María compró ${docenas} docenas de bananos. ¿Cuántas unidades tiene en total?`,
+                        lectura: `Doña María compró ${docenas} docenas de bananos. ¿Cuántas unidades tiene en total?`,
+                        correcta: sol
+                    };
+                }
+            },
+            {
+                icono: "🧀",
+                generar: () => {
+                    let precioLibra = Math.floor(Math.random() * 10) + 60; 
+                    let libras = 2;        
+                    let sol = precioLibra * libras;
+                    return {
+                        texto: `La libra de queso cuesta C$${precioLibra}. Si compramos ${libras} libras, ¿cuánto pagaremos?`,
+                        lectura: `La libra de queso cuesta ${precioLibra} córdobas. Si compramos ${libras} libras, ¿cuánto pagaremos?`,
+                        correcta: sol
+                    };
+                }
+            },
+            {
+                icono: "🍊",
+                generar: () => {
+                    let naranjas = Math.floor(Math.random() * 20) + 30; 
+                    let danadas = Math.floor(Math.random() * 5) + 3;   
+                    let sol = naranjas - danadas;
+                    return {
+                        texto: `En un balde hay ${naranjas} naranjas. Se encontraron ${danadas} dañadas. ¿Cuántas buenas quedan?`,
+                        lectura: `En un balde hay ${naranjas} naranjas. Se encontraron ${danadas} dañadas. ¿Cuántas buenas quedan?`,
+                        correcta: sol
+                    };
+                }
+            }
+        ];
+
+        function inicializarAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function alternarAudioEnunciado() {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById('btn-audio');
+
+            if (estadoAudio === "detenido") {
+                window.speechSynthesis.cancel();
+                discursoActual = new SpeechSynthesisUtterance(problemas[indiceActual].lectura);
+                discursoActual.lang = 'es-ES';
+                discursoActual.rate = 0.95;
+
+                discursoActual.onend = () => { resetearBotonAudio(); };
+
+                estadoAudio = "reproduciendo";
+                btn.innerHTML = "⏸️ Pausar";
+                btn.className = "btn-audio-control activo";
+                window.speechSynthesis.speak(discursoActual);
+
+            } else if (estadoAudio === "reproduciendo") {
+                window.speechSynthesis.pause();
+                estadoAudio = "pausado";
+                btn.innerHTML = "▶️ Continuar";
+                btn.className = "btn-audio-control pausado";
+
+            } else if (estadoAudio === "pausado") {
+                window.speechSynthesis.resume();
+                estadoAudio = "reproduciendo";
+                btn.innerHTML = "⏸️ Pausar";
+                btn.className = "btn-audio-control activo";
+            }
+        }
+
+        function detenerAudioLimpio() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            resetearBotonAudio();
+        }
+
+        function resetearBotonAudio() {
+            estadoAudio = "detenido";
+            const btn = document.getElementById('btn-audio');
+            if(btn) {
+                btn.innerHTML = "🔊 Escuchar";
+                btn.className = "btn-audio-control";
+            }
+        }
+
+        function emitirVozObligatoria(texto) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
+                resetearBotonAudio();
+                const u = new SpeechSynthesisUtterance(texto);
+                u.lang = 'es-ES';
+                u.rate = 1.0;
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function sonarEfectoInclusivo(tipo) {
+            inicializarAudio();
+            if(!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (tipo === 'correcto') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime); 
+                osc.frequency.exponentialRampToValueAtTime(554.37, audioCtx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+            } else if (tipo === 'incorrecto') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.15);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+            }
+        }
+
+        function construirSetProblemas() {
+            let combinacion = [...plantillasProblemas, ...plantillasProblemas].sort(() => Math.random() - 0.5);
+            return combinacion.map(p => {
+                let datos = p.generar();
+                return {
+                    icono: p.icono,
+                    texto: datos.texto,
+                    lectura: datos.lectura,
+                    correcta: datos.correcta,
+                    opciones: crearOpciones(datos.correcta)
+                };
+            });
+        }
+
+        function crearOpciones(correcta) {
+            let opciones = new Set([correcta]);
+            while(opciones.size < 4) {
+                let desvio = Math.floor(Math.random() * 6) + 1;
+                let distractor = Math.random() > 0.5 ? correcta + desvio : correcta - desvio;
+                if(distractor > 0) opciones.add(distractor);
+            }
+            return [...opciones].sort(() => Math.random() - 0.5);
+        }
+
+        function iniciarJuego() {
+            inicializarAudio();
+            problemas = construirSetProblemas();
+            indiceActual = 0;
+            puntosBaseAcumulados = 0;
+            totalCorreccionesModoJuego = 0;
+            tiempoSegundos = 0;
+            blockAccionSeleccion = false;
+
+            document.getElementById('txt-puntos').innerText = puntosBaseAcumulados;
+            document.getElementById('txt-tiempo').innerText = tiempoSegundos + "s";
+
+            document.getElementById('pantalla-inicio').style.display = 'none';
+            document.getElementById('pantalla-final').style.display = 'none';
+            document.getElementById('pantalla-juego').style.display = 'flex';
+
+            clearInterval(intervaloTiempo);
+            intervaloTiempo = setInterval(() => {
+                tiempoSegundos++;
+                document.getElementById('txt-tiempo').innerText = tiempoSegundos + "s";
+            }, 1000);
+
+            desplegarProblema();
+        }
+
+        function desplegarProblema() {
+            blockAccionSeleccion = false;
+            detenerAudioLimpio(); 
+            
+            let p = problemas[indiceActual];
+            document.getElementById('prod-icono').innerText = p.icono;
+            document.getElementById('prod-enunciado').innerText = p.texto;
+
+            for(let i = 0; i < 4; i++) {
+                let btn = document.getElementById(`opt-${i}`);
+                btn.innerText = p.opciones[i];
+                btn.className = `btn-opcion ${obtenerClaseColorEstilo(i)}`;
+            }
+        }
+
+        function obtenerClaseColorEstilo(indice) {
+            if(indice === 0) return 'opcion-azul';
+            if(indice === 1) return 'opcion-amarilla';
+            if(indice === 2) return 'opcion-naranja';
+            return 'opcion-verde';
+        }
+
+        function verificarRespuesta(idxSeleccionado, botonElemento) {
+            if(blockAccionSeleccion || botonElemento.classList.contains('error-seleccion')) return;
+
+            let p = problemas[indiceActual];
+            let respuestaElegida = p.opciones[idxSeleccionado];
+
+            if (respuestaElegida == p.correcta) {
+                blockAccionSeleccion = true; 
+                sonarEfectoInclusivo('correcto');
+                botonElemento.classList.add('correcto-seleccion');
+                
+                puntosBaseAcumulados += 10; 
+                document.getElementById('txt-puntos').innerText = puntosBaseAcumulados;
+                
+                emitirVozObligatoria("¡Excelente!");
+
+                setTimeout(() => {
+                    indiceActual++;
+                    if(indiceActual < 10) {
+                        desplegarProblema();
+                    } else {
+                        concluirJuego();
+                    }
+                }, 1200);
+
+            } else {
+                sonarEfectoInclusivo('incorrecto');
+                botonElemento.classList.add('error-seleccion'); 
+                totalCorreccionesModoJuego++; 
+                
+                emitirVozObligatoria("Incorrecto, vuelve a intentar.");
+            }
+        }
+
+        function concluirJuego() {
+            clearInterval(intervaloTiempo);
+            detenerAudioLimpio();
+
+            document.getElementById('pantalla-juego').style.display = 'none';
+            document.getElementById('pantalla-final').style.display = 'flex';
+
+            let penalizacionPorErrores = totalCorreccionesModoJuego * 3; 
+            let scoreFinalNeto = puntosBaseAcumulados - penalizacionPorErrores;
+            if(scoreFinalNeto < 0) scoreFinalNeto = 0;
+
+            document.getElementById('score-total').innerText = scoreFinalNeto + " pts";
+            document.getElementById('lbl-puntos-base').innerText = puntosBaseAcumulados + " pts";
+            document.getElementById('lbl-penalizacion').innerText = `-${penalizacionPorErrores} pts (${totalCorreccionesModoJuego} errores)`;
+            document.getElementById('lbl-tiempo-total').innerText = tiempoSegundos + " segundos";
+        }
+
+        function irAlInicio() {
+            clearInterval(intervaloTiempo);
+            detenerAudioLimpio();
+            document.getElementById('txt-puntos').innerText = "0";
+            document.getElementById('txt-tiempo').innerText = "0s";
+            document.getElementById('pantalla-juego').style.display = 'none';
+            document.getElementById('pantalla-final').style.display = 'none';
+            document.getElementById('pantalla-inicio').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
